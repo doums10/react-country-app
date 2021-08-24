@@ -1,9 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../components/Logo";
 import Navigation from "../components/Navigation";
 import axios from "axios";
+import Article from "../components/Article";
 
 const News = () => {
+
+	const [newsData, setNewsData] = useState([]);
   useEffect(() => {
     getData();
   }, []);
@@ -11,7 +14,7 @@ const News = () => {
   const getData = () => {
     axios
       .get("http://localhost:3003/articles")
-      .then((res) => console.log(res.data));
+      .then((res) => setNewsData(res.data));
   };
 
   return (
@@ -25,7 +28,9 @@ const News = () => {
         <textarea placeholder="Message"></textarea>
         <input type="submit" value="Envoyer" />
       </form>
-      <ul></ul>
+      <ul>{newsData.map((article) => (
+							<Article key={article.id} article={article}/>
+						))}</ul>
     </div>
   );
 };
