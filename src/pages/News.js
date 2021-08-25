@@ -37,6 +37,7 @@ const News = () => {
         .then(() => {
           setAuthor("");
           setContent("");
+          setError(false);
           getData();
         });
     }
@@ -56,12 +57,14 @@ const News = () => {
           value={author}
         />
         <textarea
-        //ternaire pour liserai rouge en cas d'erreur
-          style={{ border: error ? "1px solid red" : "1px solid #61dafb"}}
+          //ternaire pour liserai rouge en cas d'erreur
+          style={{ border: error ? "1px solid red" : "1px solid #61dafb" }}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Message"
           value={content}
         ></textarea>
+
+        {error && <p>Veuillez écrire un minimum de 140 caractères</p>}
         <input type="submit" value="Envoyer" />
       </form>
       <ul>
