@@ -8,11 +8,13 @@ const News = () => {
   const [newsData, setNewsData] = useState([]);
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     getData();
   }, []);
 
+  //fonction pour aller récupérer la data en cas de changement
   const getData = () => {
     axios
       .get("http://localhost:3003/articles")
@@ -22,18 +24,24 @@ const News = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.post("http://localhost:3003/articles", {
-      author,
-      content,
-      date: Date.now(),
-    })
-    .then(() => {
-    setAuthor("");
-    setContent("");
-    getData();
-    });
+    if (content.length < 140) {
+      setError(true);
+    } else {
+      //Envoi du formulaire avec axios
+      axios
+        .post("http://localhost:3003/articles", {
+          author,
+          content,
+          date: Date.now(),
+        })
+        .then(() => {
+          setAuthor("");
+          setContent("");
+          getData();
+        });
+    }
   };
-
+  // Fin de l'envoi
   return (
     <div className="news-container">
       <Navigation />
@@ -48,6 +56,8 @@ const News = () => {
           value={author}
         />
         <textarea
+        //ternaire pour liserai rouge en cas d'erreur
+          style={{ border: error ? "1px solid red" : "1px solid #61dafb"}}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Message"
           value={content}
