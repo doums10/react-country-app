@@ -30,6 +30,7 @@ const News = () => {
     .then(() => {
     setAuthor("");
     setContent("");
+    getData();
     });
   };
 
